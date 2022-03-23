@@ -5,7 +5,7 @@ AuditLogs
 | serialize TimeGenerated, CorrelationId, Result
 | make-series TotalRequests=dcount(CorrelationId) on TimeGenerated in range(start, end, 1h)
 | mvexpand TimeGenerated, TotalRequests
-| serialize TotalRequests, TimeGenerated, TimeGeneratedFormatted=format_datetime(todatetime(TimeGenerated), 'yyyy-M-dd [hh:mm:ss tt]')
+| serialize TotalRequests, TimeGenerated, TimeGeneratedFormatted=format_datetime(todatetime(TimeGenerated), 'yyyy-M-dd [HH:mm:ss]')
 | order by TimeGeneratedFormatted desc 
 | extend previous = toreal(next(TotalRequests,1))
 | extend PercentageChange= ((toreal(TotalRequests) - previous)/previous)*100 
